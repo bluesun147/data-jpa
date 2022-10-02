@@ -20,6 +20,7 @@ class MemberRepositoryTest {
 
     @Test
     public void testMember() {
+        System.out.println("memberRepository.getClass() = " + memberRepository.getClass()); // memberRepository = class com.sun.proxy.$Proxy119
         Member member = new Member("memberA");
         Member savedMember = memberRepository.save(member); // extends한 JpaRepository가 제공하는 것.
         // 인터페이스 밖에 없는데 다 제공. -> 스프링 데이터 jpa
