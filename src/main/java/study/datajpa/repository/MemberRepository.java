@@ -15,5 +15,6 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // 쿼리 메소드 기능
-    List<Member> findByUsername(String username);
+    // 메소드 이름만으로 쿼리 생성
+    List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 }

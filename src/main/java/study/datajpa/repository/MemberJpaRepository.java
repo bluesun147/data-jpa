@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+ // 순수 jpa로 작성한 repository
+
 @Repository
 public class MemberJpaRepository {
 
@@ -45,5 +47,12 @@ public class MemberJpaRepository {
     // 하나 조회
     public Member find(Long id) {
         return em.find(Member.class, id);
+    }
+
+    public List<Member> findByUsernameAndAgeGreaterThan(String username, int age) { // :username은 파라미터로 넘어온 username이란 뜻
+        return em.createQuery("select m from Member m where m.username = :username and m.age > :age ", Member.class)
+                .setParameter("username", username)
+                .setParameter("age", age)
+                .getResultList();
     }
 }
