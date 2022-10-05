@@ -4,6 +4,7 @@ package study.datajpa.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
 import java.util.List;
@@ -27,4 +28,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // jpql 바로 쓰기 (실무에서 많이 씀)
     @Query("select m from Member m where m.username = :username and m.age = :age")
     List<Member> findUser(@Param("username") String username, @Param("age") int age);
+
+    // 지금까지는 엔티티 타입만 조회
+    // 단순한 값이나 dto 조회하는 법
+    @Query("select m.username from Member m")
+    List<String> findUsernameList();
+
+    // 멤버랑 팀 둘다 가져와야 함 -> join
+    // dto로 조회할 때는 new operation 써야 함.
+    @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t")
+    List<MemberDto> findMemberDto();
 }
