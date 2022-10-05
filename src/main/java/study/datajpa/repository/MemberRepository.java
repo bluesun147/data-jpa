@@ -8,6 +8,7 @@ import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
 import java.util.List;
+import java.util.Optional;
 
 // 인터페이스
 // 구현체 없는데 어떻게 동작할까 ??
@@ -38,4 +39,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // dto로 조회할 때는 new operation 써야 함.
     @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t")
     List<MemberDto> findMemberDto();
+
+    @Query("select m from Member m where m.username in :names")
+    List<Member> findByNames(@Param("names") List<String> names);
+
+    // 스프링 데이터 jpa의 유연한 반환 타입 지원
+    List<Member> findListByUsername(String username); // 컬렉션
+    Member findMemberByUsername(String username); // 단건
+    Optional<Member> findOptionalByUsername(String username); // 단건 Optional -> 널일수도 아닐수도 있음
 }
