@@ -55,4 +55,22 @@ public class MemberJpaRepository {
                 .setParameter("age", age)
                 .getResultList();
     }
+
+    // 페이징
+    // 나이가 10살이면서 이름으로 내림차순
+    public List<Member> findByPage(int age, int offset, int limit) { // 몇번째부터 시작해서 몇개 가져오라는 파라미터
+        return em.createQuery("select m from Member m where m.age = :age order by m.username desc")
+                .setParameter("age", age)
+                .setFirstResult(offset) // createQuery에서 jpql로 쿼리 날리는데 어디서부터 가져올건지
+                .setMaxResults(limit) // 개수 몇개 가져올 지
+                .getResultList();
+    }
+
+    // 보통 페이징 할 때 total count도 같이 가져옴
+    // 내 페이지가 몇번째 페이지야
+    public long totalCount(int age) {
+        return em.createQuery("select count(m) from Member m where m.age = :age", Long.class)
+                .setParameter("age", age)
+                .getSingleResult();
+    }
 }
